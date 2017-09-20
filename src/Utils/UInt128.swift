@@ -419,6 +419,19 @@ extension UInt128: BitwiseOperations {
         return UInt128(0)
     }
 }
+
+public func &+(lhs: UInt128, rhs: UInt128) -> UInt128 {
+    let upperBits = lhs.value.upperBits &+ rhs.value.upperBits
+    let lowerBits = lhs.value.lowerBits &+ rhs.value.lowerBits
+    return UInt128(upperBits: upperBits, lowerBits: lowerBits)
+}
+
+public func &-(lhs: UInt128, rhs: UInt128) -> UInt128 {
+    let upperBits = lhs.value.upperBits &- rhs.value.upperBits
+    let lowerBits = lhs.value.lowerBits &- rhs.value.lowerBits
+    return UInt128(upperBits: upperBits, lowerBits: lowerBits)
+}
+
 /// Performs a bitwise AND operation on 2 UInt128 data types.
 public func &(lhs: UInt128, rhs: UInt128) -> UInt128 {
     let upperBits = lhs.value.upperBits & rhs.value.upperBits
@@ -501,6 +514,48 @@ public func >>=(lhs: inout UInt128, rhs: UInt128) {
 }
 // MARK: IntegerArithmeticType Conformance
 extension UInt128: IntegerArithmetic {
+    public typealias Words = UInt64.Words
+    
+    public var words: UInt64.Words {
+        return UInt64.Words.init(0)
+    }
+    
+    public var bitWidth: Int {
+        return 128
+    }
+    
+    public var trailingZeroBitCount: Int {
+        return 0
+    }
+    
+    public static func <<=<RHS>(lhs: inout UInt128, rhs: RHS) where RHS : BinaryInteger {
+        
+    }
+    
+    public static func >>=<RHS>(lhs: inout UInt128, rhs: RHS) where RHS : BinaryInteger {
+        
+    }
+    
+    public init<T>(_ source: T) where T : BinaryFloatingPoint {
+        
+    }
+    public init<T>(_ source: T) where T : BinaryInteger {
+        
+    }
+    
+    public init?<T>(exactly source: T) where T : BinaryInteger {
+        
+    }
+    
+    public init<T>(truncatingIfNeeded source: T) where T : BinaryInteger {
+        
+    }
+    
+    public init<T>(clamping source: T) where T : BinaryInteger {
+        
+    }
+    
+    
     public func toIntMax() -> IntMax {
         precondition(self.value.lowerBits <= UInt64(IntMax.max) && self.value.upperBits == 0, "Converting `self` to 'IntMax' causes an integer overflow")
         return IntMax(value.lowerBits)
@@ -634,6 +689,7 @@ extension UInt128: IntegerArithmetic {
         )
     }
 }
+
 public func +(lhs: UInt128, rhs: UInt128) -> UInt128 {
     precondition(~lhs >= rhs, "Addition overflow!")
     let (result, _) = UInt128.addWithOverflow(lhs, rhs)
