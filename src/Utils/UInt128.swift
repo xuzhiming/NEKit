@@ -514,6 +514,10 @@ public func >>=(lhs: inout UInt128, rhs: UInt128) {
 }
 // MARK: IntegerArithmeticType Conformance
 extension UInt128: IntegerArithmetic {
+    public init?<T>(exactly source: T) where T : BinaryFloatingPoint {
+        
+    }
+    
     public typealias Words = UInt64.Words
     
     public var words: UInt64.Words {
